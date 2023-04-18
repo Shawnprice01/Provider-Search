@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Find Providers by Postcode</title>
+</head>
+<body>
+	<h1>Enter Postcode:</h1>
+	<input type="text" id="postcode">
+	<button onclick="findProviders()">Submit</button>
+
+	<div id="provider-list">
+		<!-- Provider details will be added dynamically here -->
+	</div>
+
+	<script>
+		function findProviders() {
+			var postcode = document.getElementById("postcode").value;
+			// TODO: Call an API or function to retrieve provider details based on postcode
+			// The provider details can be added to the "provider-list" div dynamically
+		}
+	</script>
+</body>
+</html>
