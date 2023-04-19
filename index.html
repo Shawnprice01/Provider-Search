@@ -4,104 +4,97 @@
 	<title>Shawn's Rehab Provider Navigator</title>
 	<style>
 		body {
-			background-color: rgba(211, 17, 69, 0.8);
-			color: #fff;
+			background-color: rgba(211,17,69,0.8);
+			font-family: Arial, sans-serif;
 			text-align: center;
-			font-family: sans-serif;
-			margin: 0;
-			padding: 0;
-		}
-		.container {
-			margin: auto;
-			max-width: 600px;
-			padding: 20px;
-			border: 1px solid #000;
-			background-color: rgba(211, 17, 69, 1);
+			margin-top: 50px;
 		}
 		h1 {
-			margin-top: 0;
+			color: white;
+			font-size: 36px;
+			margin: 0;
+			padding: 20px;
 		}
-		input[type=text] {
+		.container {
+			display: inline-block;
+			background-color: white;
+			border: 2px solid black;
+			padding: 20px;
+		}
+		input[type="text"] {
+			font-size: 24px;
 			padding: 10px;
-			font-size: 16px;
-			border-radius: 5px;
-			border: none;
-			width: 100%;
+			width: 400px;
 			margin-bottom: 20px;
-			box-sizing: border-box;
-		}
-		input[type=submit] {
-			background-color: #fff;
-			color: #000;
-			padding: 10px;
-			border-radius: 5px;
 			border: none;
-			font-size: 16px;
+			border-bottom: 2px solid black;
+		}
+		input[type="submit"] {
+			background-color: black;
+			color: white;
+			font-size: 24px;
+			padding: 10px 20px;
+			border: none;
 			cursor: pointer;
-			box-sizing: border-box;
+			margin-left: 10px;
 		}
 		table {
 			margin: auto;
+			margin-top: 20px;
 			border-collapse: collapse;
-			width: 100%;
-			max-width: 600px;
+			width: 80%;
+			font-size: 18px;
+			text-align: left;
 		}
 		th, td {
-			padding: 8px;
-			text-align: left;
-			border-bottom: 1px solid #ddd;
-			font-size: 14px;
-			font-weight: normal;
+			padding: 12px;
+			border: 1px solid black;
 		}
 		th {
-			background-color: #f2f2f2;
-			font-weight: bold;
+			background-color: black;
+			color: white;
 		}
 	</style>
 </head>
 <body>
+	<h1>Shawn's Rehab Provider Navigator</h1>
 	<div class="container">
-		<h1>Shawn's Rehab Provider Navigator</h1>
-		<form method="get">
+		<form method="post">
 			<label for="postcode">Enter Member Postcode:</label>
-			<input type="text" id="postcode" name="postcode" placeholder="Enter postcode...">
+			<input type="text" id="postcode" name="postcode" required>
 			<input type="submit" value="Search">
 		</form>
-		<table id="resultsTable">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Address</th>
-					<th>Phone</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+		<?php
+		if(isset($_POST['postcode'])) {
+			$postcode = $_POST['postcode'];
+			$providers = array();
+			if (($handle = fopen("providers.csv", "r")) !== FALSE) {
+			    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+			        $name = $data[0];
+			        $postcode_csv = $data[1];
+			        if (strpos($postcode_csv, '-') !== false) {
+			        	$postcodes = explode('-', $postcode_csv);
+			        	if ($postcode >= $postcodes[0] && $postcode <= $postcodes[1]) {
+			        		array_push($providers, $name);
+			        	}
+			        } elseif ($postcode == $postcode_csv) {
+			        	array_push($providers, $name);
+			        }
+			    }
+			    fclose($handle);
+			}
+			if (count($providers) > 0) {
+				echo "<table>";
+				echo "<tr><th>Name</th></tr>";
+				foreach ($providers as $provider) {
+					echo "<tr><td>$provider</td></tr>";
+				}
+				echo "</table>";
+			} else {
+				echo "<p>No providers found in this area.</p>";
+			}
+		}
+		?>
 	</div>
-	<script>
-		const form = document.querySelector('form');
-		const table = document.querySelector('#resultsTable tbody');
-		form.addEventListener('submit', (event) => {
-			event.preventDefault();
-			const postcode = document.querySelector('#postcode').value;
-			fetch('providers.csv')
-				.then(response => response.text())
-				.then(text => {
-					const providers = text.split('\n').map(row => row.split(','));
-					const matchingProviders = providers.filter(provider => provider[3].includes(postcode));
-					table.innerHTML = '';
-					matchingProviders.forEach(provider => {
-						const row = document.createElement('tr');
-						row.innerHTML = `
-							<td>${provider[0]}</td>
-							<td>${provider[1]}</td>
-							<td>${provider[2]}</td>
-						`;
-						table.appendChild(row);
-					});
-				});
-		});
-	</script>
 </body>
 </html>
