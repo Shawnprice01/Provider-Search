@@ -90,25 +90,22 @@
 
 	<script>
 		function searchProviders() {
-    var postcode = document.getElementById("postcodeInput").value.toUpperCase();
-    var table = document.getElementById("resultsTable");
+		    var postcode = document.getElementById("postcodeInput").value.toUpperCase();
+		    var table = document.getElementById("resultsTable");
 
-    // clear previous results
-    while (table.hasChildNodes()) {
-        table.removeChild(table.firstChild);
-    }
+		    // clear previous results
+		    while (table.hasChildNodes()) {
+		        table.removeChild(table.firstChild);
+		    }
 
-    // get provider data from CSV file
-    // replace the URL with the link to your own CSV file
-    var url = "https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv";
-    fetch(url)
-    .then((response) => response.text())
-    .then((data) => {
-        // parse CSV data
-        var rows = data.split("\n");
-        var providers = [];
-        for (var i = 1; i < rows.length; i++) {
-            var cells = rows[i].split(",");
+		    // get provider data from CSV file
+		    // replace the URL with the link to your own CSV file
+		    var url = "https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv";
+		    fetch(url)
+		    .then((response) => response.text())
+		    .then((data) => {
+		        // parse CSV data
+		        var rows[i].split(",");
             if (cells.length == 2 && cells[1].trim() == postcode) {
                 providers.push(cells[0].trim());
             }
@@ -133,5 +130,4 @@
     })
     .catch((error) => {
         console.error(error);
-    });
-}
+
