@@ -88,19 +88,18 @@
 				table.removeChild(table.firstChild);
 			}
 
-			// get provider data from Excel sheet
-			// replace the URL with the link to your own Excel sheet
-			var url = "https://api.sheety.co/your-sheet-url-here";
+			// get provider data from CSV file
+			// replace the URL with the link to your own CSV file
+			var url = "providers.csv";
 			fetch(url)
-			.then((response) => response.json())
-			.then((data) => {
+			.then(response => response.text())
+			.then(data => {
+				// convert CSV text to array of objects
+				var providers = Papa.parse(data, { header: true, dynamicTyping: true }).data;
+
 				// filter providers based on postcode
-				var providers = data.filter(function(item) {
-					return item.postcodes.includes(postcode);
+				providers = providers.filter(function(item) {
+					return item.postcode == postcode;
 				});
 
-				// display results in table
-				if (providers.length > 0) {
-					// create table header row
-					var headerRow = table.insert
-
+				//
