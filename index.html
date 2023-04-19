@@ -90,16 +90,14 @@
 
 			// get provider data from CSV file
 			// replace the URL with the link to your own CSV file
-			var url = "providers.csv";
+			var url = "https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv";
 			fetch(url)
-			.then(response => response.text())
-			.then(data => {
-				// convert CSV text to array of objects
-				var providers = Papa.parse(data, { header: true, dynamicTyping: true }).data;
-
-				// filter providers based on postcode
-				providers = providers.filter(function(item) {
-					return item.postcode == postcode;
-				});
-
-				//
+			.then((response) => response.text())
+			.then((data) => {
+				// parse CSV data
+				var rows = data.split("\n");
+				var providers = [];
+				for (var i = 1; i < rows.length; i++) {
+					var cells = rows[i].split(",");
+					if (cells.length > 1) {
+						var provider =
