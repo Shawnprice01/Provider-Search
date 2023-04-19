@@ -2,6 +2,66 @@
 <html>
   <head>
     <title>Shawn's Rehab Provider Navigator</title>
+    <style>
+      body {
+        background-color: #d31145;
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 36px;
+        text-align: center;
+        margin-top: 50px;
+      }
+      form {
+        text-align: center;
+        margin-top: 50px;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type="text"] {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-right: 10px;
+        width: 200px;
+        font-size: 16px;
+      }
+      input[type="button"] {
+        padding: 10px;
+        background-color: white;
+        color: #d31145;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      input[type="button"]:hover {
+        background-color: #d31145;
+        color: white;
+      }
+      table {
+        margin-top: 50px;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th {
+        text-align: left;
+        background-color: #d31145;
+        color: white;
+        padding: 10px;
+      }
+      td {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+    </style>
   </head>
   <body>
     <h1>Shawn's Rehab Provider Navigator</h1>
@@ -44,20 +104,7 @@
             }
             
             // Filter the provider data based on the input postcode
-            var filteredData = providerData.filter(provider => provider.Postcode.trim() === postcode.trim());
+            var filteredData = providerData.filter(provider => provider.Postcode === postcode);
             
             // Generate the HTML for the table rows
-            var tableBody = document.getElementById("providerTable").getElementsByTagName("tbody")[0];
-            tableBody.innerHTML = "";
-            for (var i = 0; i < filteredData.length; i++) {
-              var row = tableBody.insertRow(i);
-              var nameCell = row.insertCell(0);
-              var postcodeCell = row.insertCell(1);
-              nameCell.innerHTML = filteredData[i].Name;
-              postcodeCell.innerHTML = filteredData[i].Postcode;
-            }
-          });
-      }
-    </script>
-  </body>
-</html>
+
