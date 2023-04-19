@@ -44,7 +44,7 @@
             }
             
             // Filter the provider data based on the input postcode
-            var filteredData = providerData.filter(provider => provider.Postcode === postcode);
+            var filteredData = providerData.filter(provider => provider.Postcode.trim() === postcode.trim());
             
             // Generate the HTML for the table rows
             var tableBody = document.getElementById("providerTable").getElementsByTagName("tbody")[0];
