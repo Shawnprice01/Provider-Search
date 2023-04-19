@@ -1,134 +1,64 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>Shawn's Rehab Provider Navigator</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <style>
-         body {
-         margin: 0;
-         background-color: rgba(211,17,69,0.8);
-         color: white;
-         font-family: Arial, Helvetica, sans-serif;
-         text-align: center;
-         }
-         .container {
-         max-width: 800px;
-         margin: 0 auto;
-         padding: 20px;
-         background-color: rgba(211,17,69,1);
-         border: 2px solid black;
-         box-shadow: 0 0 10px black;
-         text-align: left;
-         }
-         h1 {
-         font-size: 40px;
-         margin-top: 0;
-         }
-         #postcodeInput {
-         width: 100%;
-         padding: 12px 20px;
-         margin: 8px 0;
-         box-sizing: border-box;
-         border: 2px solid black;
-         border-radius: 4px;
-         background-color: white;
-         font-size: 20px;
-         color: black;
-         }
-         #submitBtn {
-         background-color: rgba(211,17,69,1);
-         color: white;
-         padding: 14px 20px;
-         margin: 8px 0;
-         border: none;
-         border-radius: 4px;
-         cursor: pointer;
-         font-size: 20px;
-         font-weight: bold;
-         }
-         #submitBtn:hover {
-         background-color: black;
-         color: white;
-         }
-         table {
-         margin-top: 20px;
-         width: 100%;
-         border-collapse: collapse;
-         }
-         table th, table td {
-         padding: 8px;
-         text-align: left;
-         border-bottom: 1px solid black;
-         }
-         table th {
-         background-color: black;
-         color: white;
-         font-weight: bold;
-         }
-         .hide {
-         display: none;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="container">
-         <h1>Shawn's Rehab Provider Navigator</h1>
-         <form>
-            <label for="postcodeInput">Enter Member Postcode:</label><br>
-            <input type="text" id="postcodeInput" name="postcodeInput" placeholder="Enter 4 digit postcode"><br>
-            <button type="button" id="submitBtn" onclick="searchProviders()">Search Providers</button>
-         </form>
-         <table id="resultsTable">
-            <thead>
-               <tr>
-                  <th>Name</th>
-               </tr>
-            </thead>
-            <tbody></tbody>
-         </table>
-      </div>
-      <script>
-      function searchProviders() {
-      var postcode = document.getElementById("postcodeInput").value.toUpperCase();
-      var table = document.getElementById("resultsTable");
-      // clear previous results
-      while (table.hasChildNodes()) {
-      table.removeChild(table.firstChild);
+  <head>
+    <title>Shawn's Rehab Provider Navigator</title>
+  </head>
+  <body>
+    <h1>Shawn's Rehab Provider Navigator</h1>
+    <form>
+      <label for="postcode">Enter member postcode:</label>
+      <input type="text" id="postcode" name="postcode">
+      <input type="button" value="Search" onclick="searchPostcode()">
+    </form>
+    <table id="providerTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Postcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table rows will be dynamically generated here -->
+      </tbody>
+    </table>
+    <script>
+      function searchPostcode() {
+        // Get the input value from the postcode field
+        var postcode = document.getElementById("postcode").value;
+        
+        // Load the CSV file using Fetch API
+        fetch('https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv')
+          .then(response => response.text())
+          .then(data => {
+            // Parse the CSV data into an array of objects
+            var rows = data.trim().split('\n');
+            var headers = rows[0].split(',');
+            var providerData = [];
+            for (var i = 1; i < rows.length; i++) {
+              var values = rows[i].split(',');
+              var obj = {};
+              for (var j = 0; j < headers.length; j++) {
+                obj[headers[j]] = values[j];
+              }
+              providerData.push(obj);
+            }
+            
+            // Filter the provider data based on the input postcode
+            var filteredData = providerData.filter(provider => provider.postcode === postcode);
+            
+            // Generate the HTML for the table rows
+            var tableBody = document.getElementById("providerTable").getElementsByTagName("tbody")[0];
+            tableBody.innerHTML = "";
+            for (var i = 0; i < filteredData.length; i++) {
+              var row = tableBody.insertRow(i);
+              var nameCell = row.insertCell(0);
+              var postcodeCell = row.insertCell(1);
+              nameCell.innerHTML = filteredData[i].name;
+              postcodeCell.innerHTML = filteredData[i].postcode;
+            }
+          });
       }
-      // get provider data from CSV file
-      // replace the URL with the link to your own CSV file
-      var url = "https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv";
-      fetch(url)
-      .then((response) => response.text())
-      .then((data) => {
-      // parse CSV data
-      var rows = data.split("\n");
-      var providers = [];
-      for (var i = 1; i < rows.length; i++) {
-      var cells = rows[i].split(",");
-      if (cells.length == 2 && cells[1].trim() == postcode) {
-      providers.push(cells[0].trim());
-      }
-      }
-      // display search results
-      if (providers.length > 0) {
-      var headerRow = table.insertRow();
-      var nameHeader = headerRow.insertCell(0);
-      nameHeader.innerHTML = "<b>Name</b>";
-      for (var i = 0; i < providers.length; i++) {
-      var row = table.insertRow();
-      var nameCell = row.insertCell(0);
-      nameCell.innerHTML = providers[i];
-      }
-      } else {
-      var row = table.insertRow();
-      var cell = row.insertCell(0);
-      cell.innerHTML = "No results found";
-      }
-      })
-      .catch((error) => {
-      console.error(error);
-      });
-      }
-
+    </script>
+  </body>
+</html>
 
