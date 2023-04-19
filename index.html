@@ -32,13 +32,13 @@
           .then(data => {
             // Parse the CSV data into an array of objects
             var rows = data.trim().split('\n');
-            var headers = rows[0].split(',');
+            var headers = rows[0].split(',').map(h => h.trim());
             var providerData = [];
             for (var i = 1; i < rows.length; i++) {
               var values = rows[i].split(',');
               var obj = {};
               for (var j = 0; j < headers.length; j++) {
-                obj[headers[j]] = values[j];
+                obj[headers[j].toLowerCase()] = values[j].trim();
               }
               providerData.push(obj);
             }
@@ -53,12 +53,11 @@
               var row = tableBody.insertRow(i);
               var nameCell = row.insertCell(0);
               var postcodeCell = row.insertCell(1);
-              nameCell.innerHTML = filteredData[i].name;
-              postcodeCell.innerHTML = filteredData[i].postcode;
+              nameCell.innerHTML = filteredData[i].Name;
+              postcodeCell.innerHTML = filteredData[i].Postcode;
             }
           });
       }
     </script>
   </body>
 </html>
-
