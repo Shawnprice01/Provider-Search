@@ -2,67 +2,33 @@
 <html>
 <head>
 	<title>Shawn's Rehab Provider Navigator</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: rgba(211, 17, 69, 0.2); /* 20% opacity */
-		}
-		.container {
-			background-color: rgb(211, 17, 69); /* Full color inside black box */
-			margin: 0 auto; /* Center horizontally */
-			padding: 30px;
-			width: 500px; /* Adjust size of black box */
-			height: auto; /* Adjust size of black box */
-			box-sizing: border-box;
-			border: 3px solid black;
-		}
-		h1 {
-			color: white;
-			font-size: 36px;
-			font-weight: bold;
-			text-align: center;
-		}
-		form {
-			text-align: center;
-		}
-		input[type="text"] {
-			width: 100%;
-			padding: 12px 20px;
-			margin: 8px 0;
-			box-sizing: border-box;
-			border: 2px solid black;
-			border-radius: 4px;
-			font-size: 24px;
-			background-color: white;
-			color: black;
-		}
-		input[type="submit"] {
-			background-color: white;
-			color: black;
-			border: 2px solid black;
-			padding: 12px 20px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-size: 24px;
-		}
-		input[type="submit"]:hover {
-			background-color: rgb(211, 17, 69);
-			color: white;
-		}
-	</style>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#search-button').click(function() {
+				var postcode = $('#postcode-input').val();
+				$.get('providers.csv', function(data) {
+					var lines = data.split('\n');
+					for (var i = 0; i < lines.length; i++) {
+						var line = lines[i].split(',');
+						if (line[1] == postcode) {
+							$('#results').append('<p>' + line[0] + '</p>');
+						}
+					}
+				});
+			});
+		});
+	</script>
 </head>
 <body>
-	<div class="container">
+	<div style="text-align:center;">
 		<h1>Shawn's Rehab Provider Navigator</h1>
-		<form>
-			<label for="postcode">Enter Member Postcode:</label>
-			<br>
-			<input type="text" id="postcode" name="postcode" placeholder="Enter postcode" required>
-			<br>
-			<input type="submit" value="Search">
-		</form>
+		<div style="border:1px solid black; display:inline-block; padding:20px;">
+			<h3>Enter Member Postcode</h3>
+			<input type="text" id="postcode-input" style="width: 400px; height: 40px; font-size:24px;">
+			<button id="search-button" style="width: 150px; height: 40px; font-size:24px;">Search</button>
+			<div id="results" style="margin-top:20px;"></div>
+		</div>
 	</div>
 </body>
 </html>
-
