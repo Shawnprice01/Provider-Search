@@ -2,99 +2,105 @@
 <html>
 <head>
 	<title>Shawn's Rehab Provider Navigator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		body {
-			background-color: rgba(211,17,69,0.8);
-			font-family: Arial, sans-serif;
-			text-align: center;
-			margin-top: 50px;
-		}
-		h1 {
-			color: white;
-			font-size: 36px;
 			margin: 0;
-			padding: 20px;
+			background-color: rgba(211,17,69,0.8);
+			color: white;
+			font-family: Arial, Helvetica, sans-serif;
+			text-align: center;
 		}
 		.container {
-			display: inline-block;
-			background-color: white;
-			border: 2px solid black;
+			max-width: 800px;
+			margin: 0 auto;
 			padding: 20px;
-		}
-		input[type="text"] {
-			font-size: 24px;
-			padding: 10px;
-			width: 400px;
-			margin-bottom: 20px;
-			border: none;
-			border-bottom: 2px solid black;
-		}
-		input[type="submit"] {
-			background-color: black;
-			color: white;
-			font-size: 24px;
-			padding: 10px 20px;
-			border: none;
-			cursor: pointer;
-			margin-left: 10px;
-		}
-		table {
-			margin: auto;
-			margin-top: 20px;
-			border-collapse: collapse;
-			width: 80%;
-			font-size: 18px;
+			background-color: rgba(211,17,69,1);
+			border: 2px solid black;
+			box-shadow: 0 0 10px black;
 			text-align: left;
 		}
-		th, td {
-			padding: 12px;
-			border: 1px solid black;
+		h1 {
+			font-size: 40px;
+			margin-top: 0;
 		}
-		th {
+		#postcodeInput {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+			border: 2px solid black;
+			border-radius: 4px;
+			background-color: white;
+			font-size: 20px;
+			color: black;
+		}
+		#submitBtn {
+			background-color: rgba(211,17,69,1);
+			color: white;
+			padding: 14px 20px;
+			margin: 8px 0;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#submitBtn:hover {
 			background-color: black;
 			color: white;
+		}
+		table {
+			margin-top: 20px;
+			width: 100%;
+			border-collapse: collapse;
+		}
+		table th, table td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid black;
+		}
+		table th {
+			background-color: black;
+			color: white;
+			font-weight: bold;
 		}
 	</style>
 </head>
 <body>
-	<h1>Shawn's Rehab Provider Navigator</h1>
 	<div class="container">
-		<form method="post">
-			<label for="postcode">Enter Member Postcode:</label>
-			<input type="text" id="postcode" name="postcode" required>
-			<input type="submit" value="Search">
+		<h1>Shawn's Rehab Provider Navigator</h1>
+		<form>
+			<label for="postcodeInput">Enter Member Postcode:</label><br>
+			<input type="text" id="postcodeInput" name="postcodeInput" placeholder="Enter 4 digit postcode"><br>
+			<button type="button" id="submitBtn" onclick="searchProviders()">Search Providers</button>
 		</form>
-		<?php
-		if(isset($_POST['postcode'])) {
-			$postcode = $_POST['postcode'];
-			$providers = array();
-			if (($handle = fopen("providers.csv", "r")) !== FALSE) {
-			    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-			        $name = $data[0];
-			        $postcode_csv = $data[1];
-			        if (strpos($postcode_csv, '-') !== false) {
-			        	$postcodes = explode('-', $postcode_csv);
-			        	if ($postcode >= $postcodes[0] && $postcode <= $postcodes[1]) {
-			        		array_push($providers, $name);
-			        	}
-			        } elseif ($postcode == $postcode_csv) {
-			        	array_push($providers, $name);
-			        }
-			    }
-			    fclose($handle);
-			}
-			if (count($providers) > 0) {
-				echo "<table>";
-				echo "<tr><th>Name</th></tr>";
-				foreach ($providers as $provider) {
-					echo "<tr><td>$provider</td></tr>";
-				}
-				echo "</table>";
-			} else {
-				echo "<p>No providers found in this area.</p>";
-			}
-		}
-		?>
+		<table id="resultsTable"></table>
 	</div>
-</body>
-</html>
+
+	<script>
+		function searchProviders() {
+			var postcode = document.getElementById("postcodeInput").value.toUpperCase();
+			var table = document.getElementById("resultsTable");
+
+			// clear previous results
+			while (table.hasChildNodes()) {
+				table.removeChild(table.firstChild);
+			}
+
+			// get provider data from Excel sheet
+			// replace the URL with the link to your own Excel sheet
+			var url = "https://api.sheety.co/your-sheet-url-here";
+			fetch(url)
+			.then((response) => response.json())
+			.then((data) => {
+				// filter providers based on postcode
+				var providers = data.filter(function(item) {
+					return item.postcodes.includes(postcode);
+				});
+
+				// display results in table
+				if (providers.length > 0) {
+					// create table header row
+					var headerRow = table.insert
+
