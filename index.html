@@ -84,19 +84,18 @@
 					<th>Name</th>
 				</tr>
 			</thead>
-			<tbody>
-			</tbody>
+			<tbody></tbody>
 		</table>
 	</div>
 
 	<script>
 		function searchProviders() {
 			var postcode = document.getElementById("postcodeInput").value.toUpperCase();
-			var table = document.getElementById("resultsTable");
+			var table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
 
 			// clear previous results
-			while (table.lastChild) {
-				table.removeChild(table.lastChild);
+			while (table.hasChildNodes()) {
+				table.removeChild(table.firstChild);
 			}
 
 			// get provider data from CSV file
@@ -105,5 +104,4 @@
 			fetch(url)
 			.then((response) => response.text())
 			.then((data) => {
-				// parse CSV data
-				var rows = data.split
+			
