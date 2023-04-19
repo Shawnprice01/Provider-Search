@@ -89,45 +89,24 @@
 	</div>
 
 	<script>
-		function searchProviders() {
-		    var postcode = document.getElementById("postcodeInput").value.toUpperCase();
-		    var table = document.getElementById("resultsTable");
+    function searchProviders() {
+        var postcode = document.getElementById("postcodeInput").value.toUpperCase();
+        var table = document.getElementById("resultsTable");
 
-		    // clear previous results
-		    while (table.hasChildNodes()) {
-		        table.removeChild(table.firstChild);
-		    }
-
-		    // get provider data from CSV file
-		    // replace the URL with the link to your own CSV file
-		    var url = "https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv";
-		    fetch(url)
-		    .then((response) => response.text())
-		    .then((data) => {
-		        // parse CSV data
-		        var rows[i].split(",");
-            if (cells.length == 2 && cells[1].trim() == postcode) {
-                providers.push(cells[0].trim());
-            }
+        // clear previous results
+        var numRows = table.rows.length;
+        for (var i = numRows - 1; i > 0; i--) {
+            table.deleteRow(i);
         }
 
-        // display search results
-        if (providers.length > 0) {
-            var headerRow = table.insertRow();
-            var nameHeader = headerRow.insertCell(0);
-            nameHeader.innerHTML = "<b>Name</b>";
+        // get provider data from CSV file
+        // replace the URL with the link to your own CSV file
+        var url = "https://raw.githubusercontent.com/Shawnprice01/Provider-Search/main/providers.csv";
+        fetch(url)
+        .then((response) => response.text())
+        .then((data) => {
+            // parse CSV data
+            var providers = [];
+            var rows = data.split
 
-            for (var i = 0; i < providers.length; i++) {
-                var row = table.insertRow();
-                var nameCell = row.insertCell(0);
-                nameCell.innerHTML = providers[i];
-            }
-        } else {
-            var row = table.insertRow();
-            var cell = row.insertCell(0);
-            cell.innerHTML = "No results found";
-        }
-    })
-    .catch((error) => {
-        console.error(error);
 
