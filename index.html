@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Shawn's Rehab Provider Navigator</title>
-    <style>
-      body {
-        background-color: rgba(211, 17, 69, 0.8); /* 20% opacity */
-      }
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid black; /* adds a 2px black border around the content */
-        box-sizing: border-box; /* ensures that the border is included in the element's total size */
-        padding: 20px; /* adds some padding between the border and the content */
-        background-color: rgb(211, 17, 69); /* full opacity inside the black box */
-        max-width: 600px; /* sets the maximum width of the container */
-        margin: 0 auto; /* centers the container horizontally */
-      }
-      h1, h2 {
-        color: white;
-        text-align: center;
-      }
-      #postcode-input {
-        font-size: 2rem; /* doubles the font size */
-        padding: 10px; /* doubles the padding */
-        margin-bottom: 10px; /* adds some space between the search box and the button */
-      }
-      button {
-        margin-left: 5px; /* adds some space between the search box and the button */
-      }
-      #provider-list {
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <div style="background-color: rgba(211, 17, 69, 0.2); /* 20% opacity outside the black box */">
-      <div class="container">
-        <h1>Shawn's Rehab Provider Navigator</h1>
-        <div>
-          <h2>Enter Member Postcode</h2>
-          <input type="text" id="postcode-input" placeholder="Enter postcode" />
-          <button type="button" onclick="searchProviders()">Search</button>
-        </div>
-        <div id="provider-list"></div>
-      </div>
-    </div>
-    <script>
-      function searchProviders() {
-        var postcode = document.getElementById("postcode-input").value;
-        // code to retrieve provider details based on postcode goes here
-        var providerDetails = "<ul><li>Provider 1</li><li>Provider 2</li><li>Provider 3</li></ul>";
-        document.getElementById("provider-list").innerHTML = providerDetails;
-      }
-    </script>
-  </body>
+<head>
+	<title>Shawn's Rehab Provider Navigator</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: rgba(211, 17, 69, 0.2); /* 20% opacity */
+		}
+		.container {
+			background-color: rgb(211, 17, 69); /* Full color inside black box */
+			margin: 0 auto; /* Center horizontally */
+			padding: 30px;
+			width: 500px; /* Adjust size of black box */
+			height: auto; /* Adjust size of black box */
+			box-sizing: border-box;
+			border: 3px solid black;
+		}
+		h1 {
+			color: white;
+			font-size: 36px;
+			font-weight: bold;
+			text-align: center;
+		}
+		form {
+			text-align: center;
+		}
+		input[type="text"] {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+			border: 2px solid black;
+			border-radius: 4px;
+			font-size: 24px;
+			background-color: white;
+			color: black;
+		}
+		input[type="submit"] {
+			background-color: white;
+			color: black;
+			border: 2px solid black;
+			padding: 12px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 24px;
+		}
+		input[type="submit"]:hover {
+			background-color: rgb(211, 17, 69);
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Shawn's Rehab Provider Navigator</h1>
+		<form>
+			<label for="postcode">Enter Member Postcode:</label>
+			<br>
+			<input type="text" id="postcode" name="postcode" placeholder="Enter postcode" required>
+			<br>
+			<input type="submit" value="Search">
+		</form>
+	</div>
+</body>
 </html>
+
