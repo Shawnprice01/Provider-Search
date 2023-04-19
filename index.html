@@ -78,7 +78,15 @@
 			<input type="text" id="postcodeInput" name="postcodeInput" placeholder="Enter 4 digit postcode"><br>
 			<button type="button" id="submitBtn" onclick="searchProviders()">Search Providers</button>
 		</form>
-		<table id="resultsTable"></table>
+		<table id="resultsTable">
+			<thead>
+				<tr>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 
 	<script>
@@ -87,8 +95,8 @@
 			var table = document.getElementById("resultsTable");
 
 			// clear previous results
-			while (table.hasChildNodes()) {
-				table.removeChild(table.firstChild);
+			while (table.lastChild) {
+				table.removeChild(table.lastChild);
 			}
 
 			// get provider data from CSV file
@@ -98,8 +106,4 @@
 			.then((response) => response.text())
 			.then((data) => {
 				// parse CSV data
-				var rows = data.split("\n");
-				var providers = [];
-				for (var i = 1; i < rows.length; i++) {
-					var cells = rows[i].split(",");
-					if (cells
+				var rows = data.split
