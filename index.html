@@ -32,14 +32,12 @@
           .then(data => {
             // Parse the CSV data into an array of objects
             var rows = data.trim().split('\n');
-            var headers = rows[0].split(',').map(h => h.trim());
             var providerData = [];
-            for (var i = 1; i < rows.length; i++) {
+            for (var i = 0; i < rows.length; i++) {
               var values = rows[i].split(',');
               var obj = {};
-              for (var j = 0; j < headers.length; j++) {
-                obj[headers[j].toLowerCase()] = values[j].trim();
-              }
+              obj.name = values[0];
+              obj.postcode = values[1];
               providerData.push(obj);
             }
             
@@ -53,8 +51,13 @@
               var row = tableBody.insertRow(i);
               var nameCell = row.insertCell(0);
               var postcodeCell = row.insertCell(1);
-              nameCell.innerHTML = filteredData[i].Name;
-              postcodeCell.innerHTML = filteredData[i].Postcode;
+              nameCell.innerHTML = filteredData[i].name;
+              postcodeCell.innerHTML = filteredData[i].postcode;
+            }
+            
+            // Display a message if no results are found
+            if (filteredData.length === 0) {
+              tableBody.innerHTML = "<tr><td colspan='2'>No results found</td></tr>";
             }
           });
       }
